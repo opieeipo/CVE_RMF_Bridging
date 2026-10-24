@@ -348,6 +348,31 @@ Everything reads from the v1 cache. No new pull is needed.
 
 ---
 
+## Next steps: passive fingerprinting (untested)
+
+Sector context can't come from the CVE record. Without an asset inventory, the chain
+has to be **telemetry -> product -> sector**. Sector v2 tested only the second hop.
+The first hop, identifying products from network traffic, is the open question.
+
+**Avoiding circularity.** Synthetic traffic generated from assumptions about which
+products sit in which sectors would only rediscover those assumptions. Instead,
+validate each hop separately on real data:
+
+| Hop | Source | What it validates | Limitation |
+|---|---|---|---|
+| product -> sector | CISA ICS advisories (done here, Sector v2) | lookup accuracy for known products | advisory-level, boilerplate labels; ICS only |
+| traffic -> product | ICS testbeds with known devices (e.g. iTrust SWaT / WADI, on request; public ICS packet captures, see Netresec's list) | fingerprinting accuracy against ground-truth devices | lab, not production traffic |
+| traffic -> product | public fingerprint references: IEEE MAC vendor prefixes, Nmap service/OS database, Zeek ICS protocol parsers | product identification without private data | coarse (vendor more often than product) |
+| traffic -> product, at scale | internet-wide scan data (Censys, Shodan; research access terms need checking) | real production devices by vendor/product | internet-exposed devices only (biased sample) |
+| end to end | an organization running the pipeline **on-premises**, sharing only accuracy figures | the whole chain on production traffic | needs a partner; no data release required |
+
+**Possible fix for the label problem (speculative).** Device counts by product from
+scan data, joined to who owns each network range (utility, hospital, manufacturer),
+would give deployment-based product -> sector priors. Those could replace CISA's
+per-advisory sector lists, which is the weakness Sector v2 exposed.
+
+---
+
 ## TODO
 
 ### Phase 0 - Setup
