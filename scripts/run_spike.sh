@@ -17,6 +17,7 @@ $PY -m src.labels --targets sector,time_to_kev
 $PY -m src.features ${LIM[@]+"${LIM[@]}"}
 $PY -m src.experiment
 $PY -m src.diagnostics
+[ "$LIMIT" = "full" ] && $PY -m src.sector_v2
 
 if [ "$LIMIT" = "full" ]; then
   $PY scripts/build_notebooks.py

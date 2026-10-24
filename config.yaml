@@ -55,7 +55,7 @@ gates:
 # "Sector v2"). Gates target quantities v1 did not measure.
 sector_v2:
   # Drop a CVE->advisory link when the advisory's vendor is not among the CVE's own
-  # CPE / CVE 5 "affected" vendors (third-party components; 14% of v1 labels).
+  # CPE / CVE 5 "affected" vendors (third-party components; 13% of v1 labels).
   label_hygiene: drop_third_party_links
   min_positives: 100        # sectors with fewer positive CVEs are not modeled
   split:

@@ -1,6 +1,6 @@
 # CVE Sector-Context Spike
 
-> **Status:** v1 spike complete (2026-10-24). The pre-registered rule pivoted to time-to-KEV, but on review that is kept as descriptive evidence of the exposure window, not as a target. Sector continues as **[Sector v2](#sector-v2-follow-up-spike)**, re-scoped as an RMF input. See [docs/spike_findings.md](docs/spike_findings.md). Numbers here are go/no-go signals, not paper results.
+> **Status:** v1 spike complete (2026-10-24). The pre-registered rule pivoted to time-to-KEV, but on review that is kept as descriptive evidence of the exposure window, not as a target. Sector was re-scoped as **[Sector v2](#sector-v2-follow-up-spike)**: a product -> sector lookup passes narrowly for known ICS products and fails for unseen vendors ([docs/sector_v2_findings.md](docs/sector_v2_findings.md)). See [docs/spike_findings.md](docs/spike_findings.md). Numbers here are go/no-go signals, not paper results.
 
 Feasibility probe for an ML paper: can a CVE's **industry sector / impact
 context** be predicted from its public text and metadata, using externally
@@ -13,7 +13,7 @@ model.
 
 ## Project Progress
 
-**Overall: 78%** (29 of 37 tasks) -- see [TODO](#todo) for details
+**Overall: 100%** (37 of 37 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup                      ████████████████████  100% (5/5)
@@ -22,7 +22,7 @@ Phase 2 - Labels & Q1 coverage gate  ██████████████�
 Phase 3 - Q2 text signal             ████████████████████  100% (5/5)
 Phase 4 - Q3 ablation                ████████████████████  100% (4/4)
 Phase 5 - Go/no-go                   ████████████████████  100% (3/3)
-Phase 6 - Sector v2                  ██░░░░░░░░░░░░░░░░░░   11% (1/9)
+Phase 6 - Sector v2                  ████████████████████  100% (9/9)
 ```
 
 *Last updated: 2026-10-24*
@@ -269,7 +269,7 @@ split, and performance on unseen vendors.
 | | v1 | v2 |
 |---|---|---|
 | Label | single-sector CVEs only (2,037) | multi-label sector sets (4,125 before hygiene) |
-| Label hygiene | none | drop CVE-advisory links where the advisory vendor isn't one of the CVE's own vendors (third-party components, 14% of v1 labels) |
+| Label hygiene | none | drop CVE-advisory links where the advisory vendor isn't one of the CVE's own vendors (third-party components, 13% of v1 labels) |
 | Primary method | text classifier, products masked | product -> vendor -> prior lookup |
 | Text | masked | unmasked, evaluated only on unseen vendors |
 | Primary split | stratified random | temporal: train on CVEs published 2023-2024, test on 2025 |
@@ -357,14 +357,19 @@ Everything reads from the v1 cache. No new pull is needed.
 ### Phase 6 - Sector v2
 
 - [x] Pre-register Sector v2 gates in `config.yaml` (`sector_v2`)
-- [ ] Multi-label sector sets with third-party-component hygiene
-- [ ] V1: label volume after hygiene
-- [ ] Product -> vendor -> prior sector lookup
-- [ ] Temporal (2023-2024 -> 2025) and vendor-grouped splits
-- [ ] V2: lookup macro-AP and coverage on the temporal split
-- [ ] V3: unmasked text + CWE + CVSS on unseen vendors
-- [ ] Reach: non-ICS CVEs covered by the lookup
-- [ ] Sector v2 write-up and decision
+- [x] Multi-label sector sets with third-party-component hygiene
+- [x] V1: label volume after hygiene
+  - **PASS:** 3,193 CVEs, 12 sectors >= 100 positives (1,568 of 6,435 third-party links dropped).
+- [x] Product -> vendor -> prior sector lookup
+- [x] Temporal (2023-2024 -> 2025) and vendor-grouped splits
+- [x] V2: lookup macro-AP and coverage on the temporal split
+  - **PASS, narrow and fragile:** macro-AP gain +0.212 (gate 0.20), 81% coverage. Excluding Siemens (53% of the test set; boilerplate six-sector lists), the gain is +0.182.
+- [x] V3: unmasked text + CWE + CVSS on unseen vendors
+  - **FAIL:** gain +0.010 (gate 0.10). Vulnerability data carries no sector signal for unseen vendors.
+- [x] Reach: non-ICS CVEs covered by the lookup
+  - 7,889 of 110,282, but 43% is Microsoft via 4 ICS advisories. Vendor-level reach is not meaningful.
+- [x] Sector v2 write-up and decision
+  - Lookup-only RMF deliverable for known ICS products; see [docs/sector_v2_findings.md](docs/sector_v2_findings.md).
 
 ## License
 

@@ -76,7 +76,7 @@ inspection:
 - A lookup of the vendor's most common sector (0.773) beats every text model.
 - Masking costs 0.17, and holding vendors out collapses masked text to 0.222.
   Per-class grouped F1 is 0.00 for IT and 0.05 for Commercial Facilities.
-- Siemens alone is 37% of labeled CVEs. 14% of sector labels are third-party
+- Siemens alone is 37% of labeled CVEs. 13% of sector labels are third-party
   component CVEs (Fortinet, VMware, etc.) relisted in an ICS vendor's advisory
   that inherit its sector.
 

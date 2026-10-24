@@ -9,7 +9,7 @@ import scipy.sparse as sp
 
 from src.config import data_path, load_config
 from src.experiment import cross_validate, folds, load_target
-from src.labels import vendor_key
+from src.sector_v2 import canon
 
 # Language NVD descriptions gain when exploitation is known; for time-to-KEV it
 # may be post-hoc (added after KEV listing) rather than disclosure-time.
@@ -20,8 +20,8 @@ def third_party_share(joined: pd.DataFrame, labels: pd.DataFrame) -> dict:
     """Single-sector CVEs whose advisory vendor is absent from the CVE's own CPE/affected vendors."""
     rows = labels.dropna(subset=["sector"]).merge(joined, on="cve_id")
     def mismatch(r):
-        own = {vendor_key(v) for v in [*r["cpe_vendors"], *r["affected_vendors"]]}
-        ics = {vendor_key(v) for v in r["ics_vendors"]}
+        own = {canon(v) for v in [*r["cpe_vendors"], *r["affected_vendors"]]} - {"", "na"}
+        ics = {canon(v) for v in r["ics_vendors"]}
         if not own:
             return np.nan
         return not any(a in b or b in a for a in ics for b in own)
