@@ -88,13 +88,34 @@ against the CrowdStrike family.
   jiang2025vulcpe; csa2026nvd]. The ICS-specific measurements (third-party relisting
   in advisories, boilerplate sector lists) were not found in prior work.
 
-## Go/no-go inputs for the proposal decision
+## Verdict: no-go
 
-- **Original framing ("ML maps fingerprints to CPEs"):** points to **no-go**. Prior
-  art and a granted patent cover the core idea.
-- **Narrowed framing (gap A, optionally with B):** **viable but different.** It's a
-  benchmark/measurement contribution with an ML component, not a new-model paper. It
-  depends on getting devices with known firmware (testbed or partner). The spike's
-  ICS label-quality audit is a natural supporting section.
-- **Sector priors from scan data:** **no-go for ICS** on current evidence (network
-  owner ≠ operator). Possibly viable for IT services, untested.
+**There is no viable ML research direction here as the project was conceived.**
+Every thread ended in a negative result or prior art:
+
+| Thread | Outcome |
+|---|---|
+| Sector from CVE data (v1, Sector v2) | Failed. v2 passed its gate by +0.012, only because Siemens reuses one sector list; without Siemens it fails. Chance level on unseen vendors |
+| Time-to-KEV | Real signal, but the label partly measures CISA's listing process, and EPSS already covers the prediction across all CVEs |
+| Fingerprint -> CPE | Academic prior art since 2017, shipped in commercial scan engines, and a granted CrowdStrike patent on the ML/LLM variant |
+| Sector priors from scan data | Exposed ICS sits mostly on ISP networks, so network-owner industry doesn't reflect sector |
+
+**The open gaps above are not an ML proposal.**
+- Gap A (an end-to-end benchmark) needs devices with known firmware versions. That is
+  the same data-access problem as fingerprinting, just moved.
+- Practitioners say passive methods often can't see firmware at all, and public
+  testbeds offer a few dozen devices.
+- The likely outcome is documenting that passive methods can't establish CVE
+  applicability. That is a measurement paper, not an ML contribution.
+- Gaps B and C depend on the same version ground truth, or overlap existing work.
+
+**What is real, but modest (workshop-level measurement or position piece):**
+- ICS advisory label quality: third-party relisting (1,568 of 6,435 links),
+  boilerplate sector lists, and ICS advisories covering 4.4% of CVEs.
+- The KEV-lag distribution: median 7.5 days, a quarter over 90 days.
+- The argument that public vulnerability data can't substitute for asset context, so
+  asset-inventory gaps are the binding constraint.
+
+**Correction to earlier advice.** Before this review, the README's next-steps advice
+called passive fingerprinting "the untested route", and the conversation recommended
+it as a viable proposal. That recommendation was premature; this review overturns it.

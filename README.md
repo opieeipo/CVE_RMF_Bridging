@@ -1,6 +1,6 @@
 # CVE Sector-Context Spike
 
-> **Status:** v1 spike complete (2026-10-24). The pre-registered rule pivoted to time-to-KEV, but on review that is kept as descriptive evidence of the exposure window, not as a target. Sector was re-scoped as **[Sector v2](#sector-v2-follow-up-spike)**: a product -> sector lookup passes narrowly for known ICS products and fails for unseen vendors ([docs/sector_v2_findings.md](docs/sector_v2_findings.md)). See [docs/spike_findings.md](docs/spike_findings.md). Numbers here are go/no-go signals, not paper results.
+> **Status:** closed 2026-10-24, **no-go**. Sector context isn't in public CVE data (v1 and Sector v2), time-to-KEV is covered by EPSS, and the fingerprinting follow-up is prior art (see [What we found](#what-we-found) and [docs/lit_review_fingerprint_to_cpe.md](docs/lit_review_fingerprint_to_cpe.md)). Numbers here are go/no-go signals, not paper results.
 
 Feasibility probe for an ML paper: can a CVE's **industry sector / impact
 context** be predicted from its public text and metadata, using externally
@@ -61,7 +61,7 @@ Details: [docs/spike_findings.md](docs/spike_findings.md) (v1) and
 
 ## Project Progress
 
-**Overall: 98%** (39 of 40 tasks) -- see [TODO](#todo) for details
+**Overall: 100%** (40 of 40 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup                      ████████████████████  100% (5/5)
@@ -71,7 +71,7 @@ Phase 3 - Q2 text signal             ██████████████�
 Phase 4 - Q3 ablation                ████████████████████  100% (4/4)
 Phase 5 - Go/no-go                   ████████████████████  100% (3/3)
 Phase 6 - Sector v2                  ████████████████████  100% (9/9)
-Phase 7 - Proposal go/no-go          █████████████░░░░░░░   67% (2/3)
+Phase 7 - Proposal go/no-go          ████████████████████  100% (3/3)
 ```
 
 *Last updated: 2026-10-24*
@@ -374,11 +374,12 @@ per-advisory sector lists, which is the weakness Sector v2 exposed.
 
 **Literature review (2026-10-24):** [docs/lit_review_fingerprint_to_cpe.md](docs/lit_review_fingerprint_to_cpe.md),
 with sources in [docs/literature.bib](docs/literature.bib).
+**Verdict: no-go.**
 - ML banner -> CPE is prior art, including a granted CrowdStrike patent on LLM-based
   CPE prediction.
-- The open gap is an end-to-end, version-aware benchmark scored on CVE applicability.
-- Scan-data sector priors are undercut for ICS: exposed devices sit mostly on ISP
-  networks.
+- The remaining gaps need firmware-version ground truth that isn't available, and
+  would be measurement work, not ML.
+- Scan-data sector priors fail for ICS: exposed devices sit mostly on ISP networks.
 
 ---
 
@@ -457,7 +458,8 @@ with sources in [docs/literature.bib](docs/literature.bib).
 
 - [x] Literature review: fingerprint -> CPE matching
 - [x] BibTeX of reviewed sources (`docs/literature.bib`)
-- [ ] Go/no-go on proposing the project (owner's decision)
+- [x] Go/no-go on proposing the project (owner's decision)
+  - **No-go (2026-10-24).** No viable ML direction; back to the drawing board. Salvageable: a modest measurement/position piece (ICS label quality, KEV lag, asset context as the binding constraint).
 
 ## License
 
