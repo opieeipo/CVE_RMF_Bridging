@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cve-sector-context-spike"
+version = "0.0.1"
+description = "Feasibility spike: predict CVE sector / impact context from public text and metadata"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+dependencies = [
+    "requests==2.34.2",
+    "ijson==3.6.0",
+    "pandas==3.0.6",
+    "pyarrow==26.0.0",
+    "pyyaml==6.0.3",
+    "scikit-learn==1.9.1",
+    "scipy==1.18.1",
+    "joblib==1.6.0",
+    "jupyterlab==4.6.4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1"]
+
+[tool.setuptools]
+packages = ["src"]

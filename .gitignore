@@ -1,0 +1,29 @@
+# Data: raw feeds and all derived data stay local
+data/**
+!data/raw/
+!data/interim/
+!data/processed/
+!data/*/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment and secrets (e.g. NVD API key)
+.env
+.env.*
+
+# OS and editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
