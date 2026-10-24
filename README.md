@@ -11,6 +11,54 @@ This is a **spike**. Its numbers are signals, not paper results. The code is
 written to be reusable toward the real submission, but nothing here is the
 model.
 
+## What we found
+
+**The core finding: a CVE describes the flaw, not where the flawed product is
+used.** Properties of the vulnerability itself can be learned from public CVE data.
+Deployment context, such as sector, is not in it.
+
+**1. Sector can't be learned from the CVE itself.**
+- *The text carries no sector signal for an unknown product.* With product names
+  removed, description text predicted sector mainly by telling vendors apart. On
+  vendors the model hadn't seen, text + CWE + CVSS scored at chance (macro-AP +0.01
+  over prevalence).
+- *Only product memorization worked.* "This product appeared in an Energy-tagged
+  advisory, so its next CVE is probably Energy" passed, narrowly (+0.212 against a
+  0.20 gate). Most of that came from Siemens reusing one six-sector list across
+  advisories; without Siemens it falls to +0.182.
+- *The public sector labels are weak.* CISA tags sectors per advisory, not per CVE.
+  They describe where a product is *deployed*, and are often boilerplate. A quarter
+  of advisory-to-CVE links were third-party components inheriting someone else's
+  sectors. ICS advisories cover only 4.4% of CVEs, and the IT sector barely appears.
+
+**2. Exploitation speed was trainable.** Time-to-KEV scored macro-F1 0.52 against a
+0.22 baseline, and 0.39 on unseen vendors. Most of that signal survives with CWE +
+CVSS alone. That fits the core finding, since how fast a flaw is exploited depends
+on the flaw. Two caveats:
+- it still needs a check against features as they stood at disclosure;
+- the label partly measures CISA's own listing process.
+
+**3. The public data is also messy.** 37% of 2025 CVEs have no CPE yet (NVD
+backlog), 17% list the vendor as "n/a", and vendor names come in several spellings.
+This is fixable and wasn't the deciding problem. The deciding problem is #1: the
+information isn't recorded anywhere in the CVE.
+
+**What this means.** If deployment context isn't in the vulnerability record, it can
+only come from the asset side: knowing which products you run, and where. An
+organization without a usable asset inventory (CMDB) can't recover that context
+from public vulnerability data. That holds for SMEs and multinationals alike.
+**Public vulnerability data can't substitute for asset context, so the gap in asset
+inventories is the binding constraint.**
+- *Not measured here:* how complete organizations' inventories actually are, or how
+  inventory gaps translate into exposure. That claim rests on domain knowledge and
+  the literature, not on this spike.
+- *The untested route:* identifying products directly from network telemetry
+  (passive fingerprinting). If that works, the product -> sector lookup can still
+  supply context without a maintained CMDB.
+
+Details: [docs/spike_findings.md](docs/spike_findings.md) (v1) and
+[docs/sector_v2_findings.md](docs/sector_v2_findings.md) (Sector v2).
+
 ## Project Progress
 
 **Overall: 100%** (37 of 37 tasks) -- see [TODO](#todo) for details
