@@ -1,14 +1,24 @@
 #!/usr/bin/env bash
-# End-to-end spike on a sample. Usage: scripts/run_spike.sh [limit]
+# End-to-end spike. Usage: scripts/run_spike.sh [limit|full]   (default: 2000-row sample)
+# The sample run proves the wiring only; gate numbers come from `full`.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-LIMIT="${1:-2000}"
+PY="python"
+[ -x .venv/bin/python ] && PY=".venv/bin/python"
 
-python -m src.pull --limit "$LIMIT"
-python -m src.normalize --limit "$LIMIT"
-python -m src.labels --targets sector,time_to_kev
+LIMIT="${1:-2000}"
+if [ "$LIMIT" = "full" ]; then LIM=(); else LIM=(--limit "$LIMIT"); fi
+
+$PY -m src.pull ${LIM[@]+"${LIM[@]}"}
+$PY -m src.normalize ${LIM[@]+"${LIM[@]}"}
+$PY -m src.labels --targets sector,time_to_kev
 # Q1 gate: review notebooks/00_coverage.ipynb before trusting anything below.
-python -m src.features --limit "$LIMIT"
-python -m src.experiment --target sector
-python -m src.experiment --target sector --ablate
+$PY -m src.features ${LIM[@]+"${LIM[@]}"}
+$PY -m src.experiment
+$PY -m src.diagnostics
+
+if [ "$LIMIT" = "full" ]; then
+  $PY scripts/build_notebooks.py
+  .venv/bin/jupyter nbconvert --to notebook --execute --inplace notebooks/0*.ipynb
+fi

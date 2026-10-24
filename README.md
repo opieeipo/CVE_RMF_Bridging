@@ -1,6 +1,6 @@
 # CVE Sector-Context Spike
 
-> **Status:** feasibility spike. No results yet. Numbers produced here are go/no-go signals, not paper results.
+> **Status:** spike complete (2026-10-24). **GO on the time-to-KEV framing, with conditions; sector is a negative result.** See [docs/spike_findings.md](docs/spike_findings.md). Numbers here are go/no-go signals, not paper results.
 
 Feasibility probe for an ML paper: can a CVE's **industry sector / impact
 context** be predicted from its public text and metadata, using externally
@@ -13,15 +13,15 @@ model.
 
 ## Project Progress
 
-**Overall: 50%** (14 of 28 tasks) -- see [TODO](#todo) for details
+**Overall: 100%** (28 of 28 tasks) -- see [TODO](#todo) for details
 
 ```
-Phase 0 - Setup                      ████████████████░░░░   80% (4/5)
-Phase 1 - Pull & normalize           █████████████████░░░   83% (5/6)
+Phase 0 - Setup                      ████████████████████  100% (5/5)
+Phase 1 - Pull & normalize           ████████████████████  100% (6/6)
 Phase 2 - Labels & Q1 coverage gate  ████████████████████  100% (5/5)
-Phase 3 - Q2 text signal             ░░░░░░░░░░░░░░░░░░░░    0% (0/5)
-Phase 4 - Q3 ablation                ░░░░░░░░░░░░░░░░░░░░    0% (0/4)
-Phase 5 - Go/no-go                   ░░░░░░░░░░░░░░░░░░░░    0% (0/3)
+Phase 3 - Q2 text signal             ████████████████████  100% (5/5)
+Phase 4 - Q3 ablation                ████████████████████  100% (4/4)
+Phase 5 - Go/no-go                   ████████████████████  100% (3/3)
 ```
 
 *Last updated: 2026-10-24*
@@ -107,12 +107,18 @@ need one.
 |   +-- labels.py             # sector + time-to-KEV label assignment
 |   +-- features.py           # interim -> processed  (text + metadata vectors)
 |   +-- experiment.py         # processed -> metrics  (train/eval/ablate)
+|   +-- gates.py              # pre-registered go/no-go checks
+|   +-- diagnostics.py        # label-noise and leakage checks
 +-- notebooks/
 |   +-- 00_coverage.ipynb     # Q1: label counts, sector balance. RUN FIRST.
 |   +-- 01_signal.ipynb       # Q2: text -> target, product-masked baseline
 |   +-- 02_ablation.ipynb     # Q3: feature-set degradation curve
++-- docs/
+|   +-- spike_findings.md     # Phase 5 go/no-go write-up
 +-- scripts/
-    +-- run_spike.sh          # end-to-end on a sample, one command
+    +-- run_spike.sh          # end-to-end: sample (default) or `full`
+    +-- build_notebooks.py    # regenerate the three notebooks
+    +-- update_progress.py    # recompute this README's progress bars
 ```
 
 ---
@@ -248,14 +254,14 @@ cached data.
 - [x] MIT license
 - [x] `pyproject.toml` with pinned dependencies
 - [x] `config.yaml` starting point
-- [ ] `scripts/run_spike.sh` end-to-end sample run
+- [x] `scripts/run_spike.sh` end-to-end sample run
 
 ### Phase 1 - Pull & normalize
 
 - [x] NVD bulk yearly feed pull, concurrent with check-and-skip cache
 - [x] CISA KEV catalog pull
 - [x] CISA ICS advisories pull
-- [ ] NVD CPE dictionary pull
+- [x] NVD CPE dictionary pull
 - [x] Streaming normalize + join on CVE id to Parquet
 - [x] Smoke-test wiring on `--limit 2000`, then pull the full 2023-2025 window
 
@@ -270,24 +276,28 @@ cached data.
 
 ### Phase 3 - Q2 text signal
 
-- [ ] Product/vendor token masking from CPE
-- [ ] TF-IDF vectorizer with cached fit and sparse matrix
-- [ ] Majority-class baseline
-- [ ] Linear model on stratified split, macro-F1 and per-class report
-- [ ] Q2 decision: masked vs. unmasked signal above baseline
+- [x] Product/vendor token masking from CPE
+- [x] TF-IDF vectorizer with cached fit and sparse matrix
+- [x] Majority-class baseline
+- [x] Linear model on stratified split, macro-F1 and per-class report
+- [x] Q2 decision: masked vs. unmasked signal above baseline
+  - **Result: PASS for both targets.** Time-to-KEV masked macro-F1 0.52 vs 0.22 majority (0.39 vendor-grouped). Sector 0.57 vs 0.13, but a vendor lookup scores 0.77 and the vendor-grouped score collapses to 0.22, so sector signal is mostly vendor identity.
 
 ### Phase 4 - Q3 ablation
 
-- [ ] CWE and CVSS metadata features
-- [ ] Ablation loop over configured feature sets
-- [ ] `02_ablation.ipynb`: degradation curve
-- [ ] Q3 decision: does the text-free minimal set hold up
+- [x] CWE and CVSS metadata features
+- [x] Ablation loop over configured feature sets
+- [x] `02_ablation.ipynb`: degradation curve
+- [x] Q3 decision: does the text-free minimal set hold up
+  - **Result: time-to-KEV PASS** (CWE+CVSS keeps 75% of the gain; on held-out vendors it beats text). Sector degrades (41%).
 
 ### Phase 5 - Go/no-go
 
-- [ ] Write up spike findings against the pre-registered thresholds
-- [ ] Final call on paper framing (sector vs. time-to-KEV)
-- [ ] Scope a transformer follow-up only if the linear baseline earns it
+- [x] Write up spike findings against the pre-registered thresholds
+- [x] Final call on paper framing (sector vs. time-to-KEV)
+  - **GO on time-to-KEV**, conditional on disclosure-time features and a wider window. Sector is reported as a negative result. See [docs/spike_findings.md](docs/spike_findings.md).
+- [x] Scope a transformer follow-up only if the linear baseline earns it
+  - Not yet earned (text-only < CWE+CVSS on held-out vendors, n=522). A frozen-embedding probe is scoped behind an explicit trigger in the findings doc.
 
 ## License
 
