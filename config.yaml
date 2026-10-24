@@ -50,3 +50,18 @@ gates:
     # (F1[cwe,cvss] - F1_majority) / (F1[text,cwe,cvss] - F1_majority)
     pass_retention: 0.50
     weak_retention: 0.25    # between weak and pass = "degrades"; below weak = "cliff"
+
+# Sector v2 follow-up, pre-registered 2026-10-24 AFTER the v1 results (see README
+# "Sector v2"). Gates target quantities v1 did not measure.
+sector_v2:
+  # Drop a CVE->advisory link when the advisory's vendor is not among the CVE's own
+  # CPE / CVE 5 "affected" vendors (third-party components; 14% of v1 labels).
+  label_hygiene: drop_third_party_links
+  min_positives: 100        # sectors with fewer positive CVEs are not modeled
+  split:
+    temporal_train_years: [2023, 2024]   # by CVE publication year
+    temporal_test_years: [2025]
+  gates:
+    v1: {min_labeled: 3000, min_sectors: 6}      # after hygiene
+    v2: {min_ap_gain: 0.20, min_coverage: 0.50}  # lookup, temporal split
+    v3: {min_ap_gain: 0.10}                      # text+cwe+cvss, unseen vendors

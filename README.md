@@ -1,6 +1,6 @@
 # CVE Sector-Context Spike
 
-> **Status:** spike complete (2026-10-24). **GO on the time-to-KEV framing, with conditions; sector is a negative result.** See [docs/spike_findings.md](docs/spike_findings.md). Numbers here are go/no-go signals, not paper results.
+> **Status:** v1 spike complete (2026-10-24). The pre-registered rule pivoted to time-to-KEV, but on review that is kept as descriptive evidence of the exposure window, not as a target. Sector continues as **[Sector v2](#sector-v2-follow-up-spike)**, re-scoped as an RMF input. See [docs/spike_findings.md](docs/spike_findings.md). Numbers here are go/no-go signals, not paper results.
 
 Feasibility probe for an ML paper: can a CVE's **industry sector / impact
 context** be predicted from its public text and metadata, using externally
@@ -13,7 +13,7 @@ model.
 
 ## Project Progress
 
-**Overall: 100%** (28 of 28 tasks) -- see [TODO](#todo) for details
+**Overall: 78%** (29 of 37 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup                      ████████████████████  100% (5/5)
@@ -22,6 +22,7 @@ Phase 2 - Labels & Q1 coverage gate  ██████████████�
 Phase 3 - Q2 text signal             ████████████████████  100% (5/5)
 Phase 4 - Q3 ablation                ████████████████████  100% (4/4)
 Phase 5 - Go/no-go                   ████████████████████  100% (3/3)
+Phase 6 - Sector v2                  ██░░░░░░░░░░░░░░░░░░   11% (1/9)
 ```
 
 *Last updated: 2026-10-24*
@@ -246,6 +247,59 @@ cached data.
 
 ---
 
+## Sector v2 (follow-up spike)
+
+*Pre-registered 2026-10-24, after the v1 results. Gates are in `config.yaml` ->
+`sector_v2`.*
+
+**Why.** v1 asked whether CVE *description text* predicts sector with product names
+removed. It mostly doesn't: the signal is vendor identity, and a plain vendor ->
+sector lookup (macro-F1 0.773) beat every text model. For an RMF input that was the
+wrong test, because the affected product is known when you assess a CVE against your
+system. v2 asks:
+- how accurate a transparent **CVE -> sector exposure** mapping is;
+- how far it reaches;
+- what can be done for vendors it has never seen.
+
+**Disclosure.** v2 was designed after seeing v1, and some v1 counts are already known
+(multi-label sector counts pass V1 before hygiene). The gates are set on quantities
+v1 never measured: post-hygiene volume, lookup accuracy and coverage on a temporal
+split, and performance on unseen vendors.
+
+| | v1 | v2 |
+|---|---|---|
+| Label | single-sector CVEs only (2,037) | multi-label sector sets (4,125 before hygiene) |
+| Label hygiene | none | drop CVE-advisory links where the advisory vendor isn't one of the CVE's own vendors (third-party components, 14% of v1 labels) |
+| Primary method | text classifier, products masked | product -> vendor -> prior lookup |
+| Text | masked | unmasked, evaluated only on unseen vendors |
+| Primary split | stratified random | temporal: train on CVEs published 2023-2024, test on 2025 |
+| Metric | macro-F1 | macro average precision over sectors, plus coverage |
+| Critical Manufacturing | counted | reported with and without (sensitivity, not a gate) |
+
+**Questions and gates**
+- **V1, labels:** >= 3,000 CVEs with >= 1 sector after hygiene, and >= 6 sectors with
+  >= 100 positives. Before hygiene v1 already shows 4,125 CVEs and 12 such sectors,
+  so this only checks that hygiene doesn't break volume.
+- **V2, lookup (temporal split):** macro-AP >= mean sector prevalence + 0.20, *and* the
+  lookup covers >= 50% of 2025 test CVEs (product or vendor seen in training).
+- **V3, unseen vendors (vendor-grouped split):** unmasked text + CWE + CVSS macro-AP
+  >= mean prevalence + 0.10.
+- **Reach (descriptive, no gate):** how many non-ICS CVEs in the window the lookup
+  reaches. v1 found 24,581 of 108,489 at vendor level.
+
+**Decision rules**
+- V2 pass: the lookup is the RMF deliverable, and v1 stands as "text alone doesn't
+  do it".
+- V3 pass: a text model extends exposure mapping to new vendors. V3 fail: the
+  deliverable is lookup-only, and its coverage bound is the stated limitation.
+- V2 fail: sector as an RMF input isn't supportable from public ICS advisory labels.
+  That calls for a different label source. Open question: no IT-sector label source
+  is in hand; ICS advisories cover 4.4% of CVEs and only 34 single-sector IT CVEs.
+
+Everything reads from the v1 cache. No new pull is needed.
+
+---
+
 ## TODO
 
 ### Phase 0 - Setup
@@ -296,8 +350,21 @@ cached data.
 - [x] Write up spike findings against the pre-registered thresholds
 - [x] Final call on paper framing (sector vs. time-to-KEV)
   - **GO on time-to-KEV**, conditional on disclosure-time features and a wider window. Sector is reported as a negative result. See [docs/spike_findings.md](docs/spike_findings.md).
+  - *Post-spike review:* time-to-KEV is retained as evidence of the exposure window, not as a paper target (its label measures CISA's process; EPSS covers the prediction niche). Sector moves to Phase 6.
 - [x] Scope a transformer follow-up only if the linear baseline earns it
   - Not yet earned (text-only < CWE+CVSS on held-out vendors, n=522). A frozen-embedding probe is scoped behind an explicit trigger in the findings doc.
+
+### Phase 6 - Sector v2
+
+- [x] Pre-register Sector v2 gates in `config.yaml` (`sector_v2`)
+- [ ] Multi-label sector sets with third-party-component hygiene
+- [ ] V1: label volume after hygiene
+- [ ] Product -> vendor -> prior sector lookup
+- [ ] Temporal (2023-2024 -> 2025) and vendor-grouped splits
+- [ ] V2: lookup macro-AP and coverage on the temporal split
+- [ ] V3: unmasked text + CWE + CVSS on unseen vendors
+- [ ] Reach: non-ICS CVEs covered by the lookup
+- [ ] Sector v2 write-up and decision
 
 ## License
 

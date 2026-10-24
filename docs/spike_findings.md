@@ -11,6 +11,13 @@ These are go/no-go signals from linear baselines, not paper results.
 **GO on the time-to-KEV framing, with two conditions to clear before any claim
 (below). Sector prediction does not pass Q1 and is reported as a negative result.**
 
+> **Post-spike review:** the GO above is the pre-registered fallback rule firing,
+> not a judgment that time-to-KEV is a valuable prediction target. On review it
+> isn't one: its label measures CISA's listing process as much as exploitation, and
+> EPSS already covers the predictive niche. Time-to-KEV is kept as **descriptive
+> evidence of the exposure window**. Sector continues as a re-scoped follow-up
+> (README, "Sector v2"). See [Post-spike review](#post-spike-review).
+
 | Gate | Sector | Time-to-KEV |
 |---|---|---|
 | Q1 labels in volume | **FAIL** (balance: 62.0% > 60%) | n = 522 (no volume gate was pre-registered for it) |
@@ -121,6 +128,8 @@ and fall in the <=7d bucket.
 
 ## Final call on framing
 
+*Superseded by the [Post-spike review](#post-spike-review); kept as originally written.*
+
 **Time-to-KEV is the paper framing.** It has clean, externally sourced labels with
 no sector dependency, signal that survives product masking and vendor hold-out, and
 a text-free minimal model that holds up, which is the embeddable story.
@@ -152,3 +161,47 @@ Scoped plan, only after conditions 1-2 are met:
 - Without the advisory typo handling, the single-sector count is 2,023 instead of
   2,037. Q1 still fails, on the same check.
 - With CPE dictionary titles added to masking: masked sector F1 0.567 -> 0.569.
+
+## Post-spike review
+
+*Added 2026-10-24, after the verdict above. Nothing above was re-scored; this changes
+how the results are used, not what they are.*
+
+**Time-to-KEV is a weak prediction target.**
+- *The label measures CISA as much as attackers.* KEV `dateAdded` is when CISA
+  confirmed and listed a CVE, not when exploitation began. A model predicting it
+  partly learns CISA's intake priorities and latency, so it evaluates the KEV process
+  more than it forecasts exploitation.
+- *The niche is taken.* EPSS already scores exploitation likelihood daily from
+  disclosure. A three-bucket "how fast will this be listed", defined only on CVEs
+  that eventually are, adds little beside it.
+- *It's conditional.* It says nothing about the CVEs that never reach KEV, which
+  are the large majority.
+
+**What it is useful for: measuring the exposure window.** The same property that
+makes it a poor target makes it the right measurement of how long the central
+apparatus takes to issue an authoritative "this is exploited" signal. Among the 522
+KEV CVEs published 2023-2025:
+- **half were listed within 7.5 days**, and a quarter took more than 90;
+- the mean was 91 days and the longest 1,268;
+- 26 were listed before NVD publication.
+
+These figures are conditional on eventual listing and right-censored for late-2025
+CVEs. They are retained as descriptive evidence for the companion IDS-integration
+argument, not as a model.
+
+**The Q3 result is still the useful finding.** A small, text-free CWE + CVSS set
+carries most of the time-to-KEV signal and holds up on unseen vendors. That is
+evidence (pending the disclosure-time condition) that vulnerability metadata alone
+can drive an embeddable model. Its value has to be shown against EPSS over all CVEs,
+not on KEV-listed CVEs only.
+
+**Sector is re-scoped, not dropped.** v1 tested whether description *text* predicts
+sector with product names removed, and found it mostly doesn't. For an RMF input,
+the affected product is known when a CVE is assessed against a system, so the
+transparent vendor -> sector lookup (macro-F1 0.773, the best score in the spike)
+is the relevant artifact. Sector v2 (README) tests that framing with:
+- multi-label sectors and third-party label hygiene;
+- a temporal split;
+- separate evaluation on unseen vendors;
+- pre-registered gates in `config.yaml` -> `sector_v2`.
