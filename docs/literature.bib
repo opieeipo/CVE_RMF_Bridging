@@ -1,0 +1,297 @@
+% Literature reviewed for docs/lit_review_fingerprint_to_cpe.md (2026-10-24).
+% Metadata checked against Crossref, arXiv, publisher or institutional pages.
+% Entries whose authorship could not be verified say so in `note`.
+
+% ---------------------------------------------------------------- banner -> CPE / vendor / product
+
+@inproceedings{feng2018are,
+  author    = {Xuan Feng and Qiang Li and Haining Wang and Limin Sun},
+  title     = {Acquisitional Rule-based Engine for Discovering {Internet-of-Things} Devices},
+  booktitle = {27th {USENIX} Security Symposium ({USENIX} Security 18)},
+  pages     = {327--341},
+  year      = {2018},
+  isbn      = {978-1-939133-04-5},
+  url       = {https://www.usenix.org/conference/usenixsecurity18/presentation/feng}
+}
+
+@article{javed2020banner,
+  author  = {Talha Javed and Muhammad Haseeb and Muhammad Abdullah and Mobin Javed},
+  title   = {Using Application Layer Banner Data to Automatically Identify {IoT} Devices},
+  journal = {ACM SIGCOMM Computer Communication Review},
+  volume  = {50},
+  number  = {3},
+  pages   = {23--29},
+  year    = {2020},
+  doi     = {10.1145/3411740.3411744},
+  note    = {Re-implementation of ARE; reports it does not reach the originally reported accuracy}
+}
+
+@incollection{na2017study,
+  author    = {Sarang Na and Taeeun Kim and Hwankuk Kim},
+  title     = {A Study on the Service Identification of Internet-Connected Devices Using Common Platform Enumeration},
+  booktitle = {Advanced Multimedia and Ubiquitous Engineering (MUE/FutureTech 2017)},
+  series    = {Lecture Notes in Electrical Engineering},
+  publisher = {Springer},
+  pages     = {237--241},
+  year      = {2017},
+  doi       = {10.1007/978-981-10-5041-1_40}
+}
+
+@article{na2018service,
+  author  = {Sarang Na and Taeeun Kim and Hwankuk Kim},
+  title   = {Service Identification of Internet-Connected Devices Based on Common Platform Enumeration},
+  journal = {Journal of Information Processing Systems},
+  volume  = {14},
+  number  = {3},
+  pages   = {740--750},
+  year    = {2018},
+  doi     = {10.3745/JIPS.03.0098}
+}
+
+@inproceedings{ohare2019scout,
+  author    = {Jamie O'Hare and Rich Macfarlane and Owen Lo},
+  title     = {Identifying Vulnerabilities Using Internet-Wide Scanning Data},
+  booktitle = {2019 IEEE 12th International Conference on Global Security, Safety and Sustainability (ICGS3)},
+  pages     = {1--10},
+  year      = {2019},
+  doi       = {10.1109/ICGS3.2019.8688018}
+}
+
+@inproceedings{ponce2024sbseg,
+  author    = {Lucas M. Ponce and Indra Ribeiro and Etelvina Oliveira and {\'I}talo Cunha and Cristine Hoepers and Klaus Steding-Jessen and Marcelo H. P. C. Chaves and Dorgival Guedes and Wagner {Meira Jr.}},
+  title     = {Identifica{\c{c}}{\~a}o de Servi{\c{c}}os e Dispositivos em Dados de Motores de Busca para o Enriquecimento de An{\'a}lise de Vulnerabilidades},
+  booktitle = {Anais do XXIV Simp{\'o}sio Brasileiro de Seguran{\c{c}}a da Informa{\c{c}}{\~a}o e de Sistemas Computacionais (SBSeg 2024)},
+  pages     = {367--382},
+  year      = {2024},
+  doi       = {10.5753/sbseg.2024.241721}
+}
+
+@misc{recog,
+  author       = {{Rapid7}},
+  title        = {Recog: A Recognition Framework},
+  howpublished = {\url{https://github.com/rapid7/recog}},
+  note         = {Open-source regex fingerprint database; emits CPE 2.3 for a subset of fingerprints. Accessed 2026-10-24}
+}
+
+@misc{censys_software_docs,
+  author       = {{Censys}},
+  title        = {Software (Legacy Search data model) and Software Confidence (Platform)},
+  howpublished = {\url{https://docs.censys.com/docs/ls-software}},
+  note         = {Service software reported as CPE 2.3; fingerprint confidence 1.0 / 0.75 / 0.5 for exact, regex and heuristic matches. Accessed 2026-10-24}
+}
+
+% ---------------------------------------------------------------- patents
+
+@misc{drew2026llmcpe,
+  author       = {Shaefer Drew and Michael Avraham Brautbar},
+  title        = {{CPE} Prediction Using Banner-Prompted {LLM}},
+  howpublished = {U.S. Patent 12,625,973 B1},
+  year         = {2026},
+  note         = {Assignee CrowdStrike Inc.; application 19/049,283 filed 2025-02-10; granted 2026-05-12. EP counterpart EP4790578A1. Cites related U.S. Appl. 19/080,998 ``CPE Prediction Using Banner-Prompted AI/ML Modeling'' (notice of allowance 2025-09-16). Claims not reviewed},
+  url          = {https://patents.google.com/patent/US12625973B1/en}
+}
+
+@misc{uspto12549590,
+  title        = {{CPE} Prediction Using Banner-Prompted {AI/ML} Modeling},
+  howpublished = {USPTO document 12549590},
+  note         = {Title from USPTO full-text search snippet; assignee and status not verified (likely the CrowdStrike sibling of US 12,625,973)},
+  url          = {https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12549590}
+}
+
+@misc{uspto12705364,
+  title        = {{CPE} Prediction Using Banner Similarity},
+  howpublished = {USPTO document 12705364},
+  note         = {Title from USPTO full-text search snippet; assignee and status not verified},
+  url          = {https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12705364}
+}
+
+@misc{uspto12339972,
+  title        = {Method for Linking a {CVE} with at Least One Synthetic {CPE}},
+  howpublished = {USPTO document 12339972},
+  note         = {Title from USPTO full-text search snippet; assignee and status not verified},
+  url          = {https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12339972}
+}
+
+% ---------------------------------------------------------------- CVE text -> CPE
+
+@incollection{wareus2020cpe,
+  author    = {Emil W{\aa}reus and Martin Hell},
+  title     = {Automated {CPE} Labeling of {CVE} Summaries with Machine Learning},
+  booktitle = {Detection of Intrusions and Malware, and Vulnerability Assessment (DIMVA 2020)},
+  editor    = {Cl{\'e}mentine Maurice and Leyla Bilge and Gianluca Stringhini and Nuno Neves},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {12223},
+  pages     = {3--22},
+  publisher = {Springer},
+  year      = {2020},
+  doi       = {10.1007/978-3-030-52683-2_1}
+}
+
+@inproceedings{hu2024cpeidentifier,
+  author    = {Wanyu Hu and Vrizlynn Thing},
+  title     = {{CPE-Identifier}: Automated {CPE} Identification and {CVE} Summaries Annotation with Deep Learning and {NLP}},
+  booktitle = {Proceedings of the 10th International Conference on Information Systems Security and Privacy (ICISSP)},
+  pages     = {67--78},
+  year      = {2024},
+  doi       = {10.5220/0012403500003648}
+}
+
+@misc{jiang2025vulcpe,
+  author        = {Yuning Jiang and Feiyang Shang and Freedy Tan Wei You and Huilin Wang and Chia Ren Cong and Qiaoran Meng and Nay Oo and Hoon Wei Lim and Biplab Sikdar},
+  title         = {{VulCPE}: Context-Aware Cybersecurity Vulnerability Retrieval and Management},
+  year          = {2025},
+  eprint        = {2505.13895},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CR}
+}
+
+% ---------------------------------------------------------------- CPE matching and NVD data quality
+
+@inproceedings{tovarnak2021graphcpe,
+  author    = {Daniel Tovar{\v{n}}{\'a}k and Luk{\'a}{\v{s}} Sadlek and Pavel {\v{C}}eleda},
+  title     = {Graph-Based {CPE} Matching for Identification of Vulnerable Asset Configurations},
+  booktitle = {2021 IFIP/IEEE International Symposium on Integrated Network Management (IM), GraSec Workshop},
+  year      = {2021},
+  url       = {https://ieeexplore.ieee.org/document/9463994}
+}
+
+@inproceedings{sadlek2022challenges,
+  author    = {Luk{\'a}{\v{s}} Sadlek and Pavel {\v{C}}eleda and Daniel Tovar{\v{n}}{\'a}k},
+  title     = {Current Challenges of Cyber Threat and Vulnerability Identification Using Public Enumerations},
+  booktitle = {Proceedings of the 17th International Conference on Availability, Reliability and Security (ARES)},
+  pages     = {1--8},
+  year      = {2022},
+  doi       = {10.1145/3538969.3544458}
+}
+
+@article{anwar2022cleaning,
+  author  = {Afsah Anwar and Ahmed Abusnaina and Songqing Chen and Frank Li and David Mohaisen},
+  title   = {Cleaning the {NVD}: Comprehensive Quality Assessment, Improvements, and Analyses},
+  journal = {IEEE Transactions on Dependable and Secure Computing},
+  volume  = {19},
+  number  = {6},
+  pages   = {4255--4269},
+  year    = {2022},
+  doi     = {10.1109/TDSC.2021.3125270}
+}
+
+@misc{csa2026nvd,
+  author       = {{Cloud Security Alliance}},
+  title        = {{NVD} Triage Overhaul: End of Universal {CVE} Enrichment},
+  howpublished = {CSA Research Note},
+  year         = {2026},
+  url          = {https://labs.cloudsecurityalliance.org/research/csa-research-note-nist-nvd-enrichment-overhaul-20260429-csa/},
+  note         = {Reports VulnCheck CPE coverage 76.95\% vs NVD 41.35\% for 2024 CVEs. Accessed 2026-10-24}
+}
+
+% ---------------------------------------------------------------- passive device identification
+
+@misc{niedermaier2019mac,
+  author        = {Matthias Niedermaier and Thomas Hanka and Sven Plaga and Alexander von Bodisco and Dominik Merli},
+  title         = {Efficient Passive {ICS} Device Discovery and Identification by {MAC} Address Correlation},
+  year          = {2019},
+  eprint        = {1904.04271},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CR}
+}
+
+@mastersthesis{mavrakis2015passive,
+  author = {Mavrakis},
+  title  = {Passive Asset Discovery and Operating System Fingerprinting in Industrial Control System Networks},
+  school = {Eindhoven University of Technology},
+  year   = {2015},
+  url    = {https://pure.tue.nl/ws/files/46916656/840171-1.pdf},
+  note   = {Author given name not verified}
+}
+
+@misc{icsscada_hybrid,
+  title        = {{ICS/SCADA} Device Recognition: A Hybrid Communication-Patterns and Passive-Fingerprinting Approach},
+  howpublished = {\url{https://www.researchgate.net/publication/332351018}},
+  year         = {2019},
+  note         = {Authors and venue NOT verified (source page inaccessible); year inferred from ResearchGate ID. Summary seen via search snippet only}
+}
+
+@article{yang2024icsasset,
+  author  = {Wei Yang and Yushan Fang and Xiaoming Zhou and Yijia Shen and Wenjie Zhang and Yu Yao},
+  title   = {Networked Industrial Control Device Asset Identification Method Based on Improved Decision Tree},
+  journal = {Journal of Network and Systems Management},
+  volume  = {32},
+  number  = {2},
+  year    = {2024},
+  doi     = {10.1007/s10922-024-09805-z}
+}
+
+@inproceedings{perdisci2020iotfinder,
+  author    = {Roberto Perdisci and Thomas Papastergiou and Omar Alrawi and Manos Antonakakis},
+  title     = {{IoTFinder}: Efficient Large-Scale Identification of {IoT} Devices via Passive {DNS} Traffic Analysis},
+  booktitle = {2020 IEEE European Symposium on Security and Privacy (EuroS\&P)},
+  pages     = {474--489},
+  year      = {2020},
+  doi       = {10.1109/EuroSP48549.2020.00037}
+}
+
+@article{mahmood2025llmiot,
+  author  = {Rameen Mahmood and Tousif Ahmed and Sai Teja Peddinti and Danny Yuxing Huang},
+  title   = {What's on My Network? Using Large Language Models to Identify Real-World {IoT} Devices at Scale},
+  journal = {Proceedings of the ACM on Networking},
+  volume  = {4},
+  number  = {CoNEXT2},
+  pages   = {1--26},
+  year    = {2026},
+  doi     = {10.1145/3808674},
+  note    = {arXiv:2510.13817}
+}
+
+@misc{wilson2026s71200,
+  author       = {Justin Wilson},
+  title        = {{ICS} Asset Inventory: Passive, or Active? {Siemens S7-1200 PLCs}},
+  howpublished = {SANS.edu Graduate Research},
+  year         = {2026},
+  url          = {https://www.sans.edu/cyber-research/ics-asset-inventory-passive-active-siemens-s7-1200-plcs}
+}
+
+@misc{dragos2025active,
+  author       = {{Dragos}},
+  title        = {Enhancing {OT} Visibility: Active Collection},
+  howpublished = {Vendor whitepaper},
+  year         = {2025},
+  url          = {https://dragos.brightspotcdn.com/69/9a/ceae6b3b4ab1ba4d871b5a2544e8/enhancing-ot-visibility-active-collection-whitepaper-04-25.pdf},
+  note         = {Vendor content; argues firmware/patch-level attributes often cannot be captured passively}
+}
+
+% ---------------------------------------------------------------- datasets
+
+@misc{icslibrary,
+  author       = {{sheng710time}},
+  title        = {{ICSLibrary}: A Versatile {ICS} Dataset for Academic Research},
+  howpublished = {\url{https://github.com/sheng710time/ICSLibrary}},
+  note         = {2,205 internet-facing endpoints, 20 vendors, 165 models; vendor/type/model labels (no CPE); LGPL-2.1; label provenance undocumented; benchmark added Oct 2026. Accessed 2026-10-24}
+}
+
+@misc{alqahtani2026roadmap,
+  author        = {Ebtesam J. Alqahtani and Mohammad Hammoudeh},
+  title         = {A Roadmap to Available {ICS} Datasets and Testbeds for Cybersecurity Research},
+  year          = {2026},
+  eprint        = {2608.30332},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CR}
+}
+
+% ---------------------------------------------------------------- sector / network-owner attribution
+
+@inproceedings{ziv2021asdb,
+  author    = {Maya Ziv and Liz Izhikevich and Kimberly Ruth and Katherine Izhikevich and Zakir Durumeric},
+  title     = {{ASdb}: A System for Classifying Owners of Autonomous Systems},
+  booktitle = {Proceedings of the 21st ACM Internet Measurement Conference (IMC)},
+  pages     = {703--719},
+  year      = {2021},
+  doi       = {10.1145/3487552.3487853}
+}
+
+@misc{censys2024ics,
+  author       = {{Censys}},
+  title        = {Global {ICS} Exposures: What Our 2024 State of the Internet Report Reveals About Critical Infrastructure Security},
+  year         = {2024},
+  url          = {https://censys.com/blog/global-ics-exposures-what-our-2024-state-of-the-internet-report-reveals-about-critical-infrastructure-security/},
+  note         = {Industry report. Exposed ICS concentrated on carrier/ISP networks. Accessed 2026-10-24}
+}

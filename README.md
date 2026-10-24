@@ -61,7 +61,7 @@ Details: [docs/spike_findings.md](docs/spike_findings.md) (v1) and
 
 ## Project Progress
 
-**Overall: 100%** (37 of 37 tasks) -- see [TODO](#todo) for details
+**Overall: 98%** (39 of 40 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup                      ████████████████████  100% (5/5)
@@ -71,6 +71,7 @@ Phase 3 - Q2 text signal             ██████████████�
 Phase 4 - Q3 ablation                ████████████████████  100% (4/4)
 Phase 5 - Go/no-go                   ████████████████████  100% (3/3)
 Phase 6 - Sector v2                  ████████████████████  100% (9/9)
+Phase 7 - Proposal go/no-go          █████████████░░░░░░░   67% (2/3)
 ```
 
 *Last updated: 2026-10-24*
@@ -371,6 +372,14 @@ scan data, joined to who owns each network range (utility, hospital, manufacture
 would give deployment-based product -> sector priors. Those could replace CISA's
 per-advisory sector lists, which is the weakness Sector v2 exposed.
 
+**Literature review (2026-10-24):** [docs/lit_review_fingerprint_to_cpe.md](docs/lit_review_fingerprint_to_cpe.md),
+with sources in [docs/literature.bib](docs/literature.bib).
+- ML banner -> CPE is prior art, including a granted CrowdStrike patent on LLM-based
+  CPE prediction.
+- The open gap is an end-to-end, version-aware benchmark scored on CVE applicability.
+- Scan-data sector priors are undercut for ICS: exposed devices sit mostly on ISP
+  networks.
+
 ---
 
 ## TODO
@@ -443,6 +452,12 @@ per-advisory sector lists, which is the weakness Sector v2 exposed.
   - 7,889 of 110,282, but 43% is Microsoft via 4 ICS advisories. Vendor-level reach is not meaningful.
 - [x] Sector v2 write-up and decision
   - Lookup-only RMF deliverable for known ICS products; see [docs/sector_v2_findings.md](docs/sector_v2_findings.md).
+
+### Phase 7 - Proposal go/no-go
+
+- [x] Literature review: fingerprint -> CPE matching
+- [x] BibTeX of reviewed sources (`docs/literature.bib`)
+- [ ] Go/no-go on proposing the project (owner's decision)
 
 ## License
 
