@@ -13,15 +13,15 @@ model.
 
 ## Project Progress
 
-**Overall: 14%** (4 of 28 tasks) -- see [TODO](#todo) for details
+**Overall: 50%** (14 of 28 tasks) -- see [TODO](#todo) for details
 
 ```
-Phase 0 - Setup               ████████████████░░░░  80% (4/5)
-Phase 1 - Pull & normalize    ░░░░░░░░░░░░░░░░░░░░   0% (0/6)
-Phase 2 - Labels & Q1 gate    ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
-Phase 3 - Q2 text signal      ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
-Phase 4 - Q3 ablation         ░░░░░░░░░░░░░░░░░░░░   0% (0/4)
-Phase 5 - Go/no-go            ░░░░░░░░░░░░░░░░░░░░   0% (0/3)
+Phase 0 - Setup                      ████████████████░░░░   80% (4/5)
+Phase 1 - Pull & normalize           █████████████████░░░   83% (5/6)
+Phase 2 - Labels & Q1 coverage gate  ████████████████████  100% (5/5)
+Phase 3 - Q2 text signal             ░░░░░░░░░░░░░░░░░░░░    0% (0/5)
+Phase 4 - Q3 ablation                ░░░░░░░░░░░░░░░░░░░░    0% (0/4)
+Phase 5 - Go/no-go                   ░░░░░░░░░░░░░░░░░░░░    0% (0/3)
 ```
 
 *Last updated: 2026-10-24*
@@ -252,20 +252,21 @@ cached data.
 
 ### Phase 1 - Pull & normalize
 
-- [ ] NVD bulk yearly feed pull, concurrent with check-and-skip cache
-- [ ] CISA KEV catalog pull
-- [ ] CISA ICS advisories pull
+- [x] NVD bulk yearly feed pull, concurrent with check-and-skip cache
+- [x] CISA KEV catalog pull
+- [x] CISA ICS advisories pull
 - [ ] NVD CPE dictionary pull
-- [ ] Streaming normalize + join on CVE id to Parquet
-- [ ] Smoke-test wiring on `--limit 2000`, then pull the full 2023-2025 window
+- [x] Streaming normalize + join on CVE id to Parquet
+- [x] Smoke-test wiring on `--limit 2000`, then pull the full 2023-2025 window
 
 ### Phase 2 - Labels & Q1 coverage gate
 
-- [ ] Sector labels from ICS advisories
-- [ ] Time-to-KEV labels (days from publication to KEV listing)
-- [ ] Transparent product -> sector lookup from CPE
-- [ ] `00_coverage.ipynb`: label counts and sector balance
-- [ ] Q1 decision: proceed on sector, or pivot to time-to-KEV
+- [x] Sector labels from ICS advisories
+- [x] Time-to-KEV labels (days from publication to KEV listing)
+- [x] Transparent product -> sector lookup from CPE
+- [x] `00_coverage.ipynb`: label counts and sector balance
+- [x] Q1 decision: proceed on sector, or pivot to time-to-KEV
+  - **Result: FAIL -> pivot to time-to-KEV.** 2,037 single-sector CVEs (pass), 5 sectors >= 50 (pass), but Critical Manufacturing is 62.0% (> 60% cap). Sector still run through Q2/Q3 as a diagnostic.
 
 ### Phase 3 - Q2 text signal
 

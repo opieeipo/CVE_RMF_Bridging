@@ -8,13 +8,45 @@ text:
   mask_product_tokens: true # strip CPE vendor/product from text for Q2
   vectorizer: tfidf
   max_features: 50000
+  # Product-name tokens are masked only if rarer than this across all NVD
+  # descriptions in the window, so generic words ("server", "controller") survive.
+  mask_max_doc_freq: 0.005
 model:
   baseline: logreg          # linear first; transformers only post-gate
   split: stratified
   metric: macro_f1
+  folds: 5
+  seed: 0
 ablation:
   feature_sets:
     - [text]
     - [text, cwe]
     - [text, cwe, cvss]
     - [cwe, cvss]           # no text — the "minimal/embeddable" probe
+
+# Pre-registered 2026-10-24, before any label counts or model scores were viewed.
+# Operationalizes the README's "Go / no-go thresholds" prose into numbers.
+labels:
+  # A CVE's sector set is the union of canonical CISA sectors over every ICS
+  # advisory that lists it. The primary (single-label) task uses CVEs whose set
+  # has exactly one sector; multi-sector CVEs feed the multi-label secondary.
+  sector_scheme: single_sector_primary
+  min_class_size: 30        # sectors smaller than this are dropped from modeling
+  # time-to-KEV buckets, in days from NVD publication to KEV dateAdded (<=0 -> first bucket)
+  time_to_kev_buckets: [7, 90]   # -> "<=7d", "8-90d", ">90d"
+gates:
+  q1:
+    min_labeled: 2000       # single-sector CVEs ("a few thousand")
+    min_sectors: 5          # sectors with >= min_sector_size CVEs
+    min_sector_size: 50
+    max_share: 0.60         # largest sector share of labeled CVEs
+  q2:
+    # masked text macro-F1 minus majority-class macro-F1, stratified 5-fold mean
+    min_gain_over_majority: 0.15
+    # if the vendor-grouped split falls below this gain, the signal is vendor-specific
+    min_gain_grouped: 0.05
+  q3:
+    # retained fraction of the full model's gain over majority:
+    # (F1[cwe,cvss] - F1_majority) / (F1[text,cwe,cvss] - F1_majority)
+    pass_retention: 0.50
+    weak_retention: 0.25    # between weak and pass = "degrades"; below weak = "cliff"
